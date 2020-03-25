@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientService } from './client.service';
 import { Client} from './client';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -11,7 +12,8 @@ pageTitle: string= 'Client List';
 clientList: Client[] = [];
 errorMessage = '';
 
-constructor(private clientService: ClientService){}
+constructor(private clientService: ClientService,
+            private router: Router){}
 
 
 ngOnInit(): void{
@@ -24,6 +26,8 @@ ngOnInit(): void{
     })
 }
 
-
+onCreate(){
+    this.router.navigate(['/clientEdit/0/edit']);
+}
 
 }
