@@ -1,0 +1,39 @@
+  <div class="card">
+    <div class="card-header">
+     <h2> {{pageTitle}} </h2>
+    </div>
+    <div class="card-body">
+  
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Address</th>
+              <th>City</th>
+              <th>State</th>
+              <th>Product Orders</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let client of clientList">
+              <td>
+                <a [routerLink]="['/clientDetails', client.id]">{{client.firstName}}</a>
+              </td>
+              <td>{{client.lastName}}</td>
+              <td>{{client.address}}</td>
+              <td>{{client.city}}</td>
+              <td>
+                {{client.state}}
+              </td>
+              <td>
+                {{client.productOrders}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+    </div>
+  </div>
