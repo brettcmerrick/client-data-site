@@ -11,6 +11,7 @@ import { Observable, Subscription} from 'rxjs';
 export class ClientEditComponent implements OnInit {
 clientForm: FormGroup;
 clientData;
+pageTitle: string;
 
   constructor(
       private clientService: ClientService,
@@ -39,7 +40,7 @@ clientData;
   getClient(id: number): void{
     this.clientService.getClient(id).subscribe({
         next: (data: Client) => this.displayClient(data)
-    })
+    });
   }
  
   displayClient(client: Client): void{
@@ -47,6 +48,11 @@ clientData;
         this.clientForm.reset();
     }
     this.clientData = client;
+    if(client.id === 0){
+      this.pageTitle = 'New Client';
+    }else{
+      this.pageTitle = 'Edit Client';
+    }
     
     this.clientForm.patchValue({
         firstName: this.clientData.firstName,
@@ -57,10 +63,40 @@ clientData;
         productOrders: this.clientData.productOrders
     })
   }
-  
-      onBack(): void{
-          this.router.navigate(['/clientList']);
-      }
 
-  
+  saveClient(): void{
+  const c = {...this.clientData, ...this.clientForm.value};
+    if(this.clientData.id === 0){
+      this.clientService.createClient(c).subscribe({
+        next: ()=> {this.onSaveComplete()}
+      });
+    }else{
+    this.clientService.updateClient(c).subscribe({
+      next: data => {
+        this.clientData = data,
+        this.onSaveComplete()
+      }
+    });
+  }
+  }
+
+  deleteClient():void{
+    if(this.clientData.id === 0){
+      this.onSaveComplete();
+    }else{
+      if(confirm(`Are you sure you want to delete ${this.clientData.firstName}'s information?`)){
+        this.clientService.deleteClient(this.clientData.id).subscribe({
+          next: () => this.onSaveComplete()
+        });
+      }
+    }
+  }
+
+
+  onSaveComplete(): void{
+    this.clientForm.reset();
+    this.router.navigate(['/clientList']);
+  }
+
+
 }

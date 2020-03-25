@@ -8,7 +8,7 @@ import { ClientService } from './client.service';
     templateUrl: 'client-details.component.html'
 })
 export class ClientDetailsComponent{
-    title: string = 'Details'
+    title: string = 'Client Details';
     url: string = '';
     client: Client;
     errorMessage = '';

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Client } from './client';
 
-import { Observable, throwError } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { Observable, throwError, of } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
+import { ClientData } from './client-data';
 
 @Injectable({
     providedIn: 'root'
@@ -22,8 +23,36 @@ getClients(): Observable<Client[]> {
 }
 
 getClient(id): Observable<Client>{
+if(id === 0){
+  return of(this.initializeClient());
+}
 const url = `${this.clientsUrl}/${id}`
 return this.http.get<Client>(url);
+}
+
+updateClient(c: Client): Observable<Client>{
+  const headers = new HttpHeaders({'content-type':'application/json'});
+  const url = `${this.clientsUrl}/${c.id}`;
+  return this.http.put<Client>(url,c,{headers: headers});
+}
+
+createClient(c: Client): Observable<Client>{
+  const headers = new HttpHeaders({'content-type':'application/json'});
+  const url = this.clientsUrl;
+  c.id = null;
+  return this.http.post<Client>(url,c,{headers}).
+  pipe(
+    tap(data => console.log(JSON.stringify(data))),
+    catchError(this.handleError)
+  )
+}
+
+deleteClient(id: number): Observable<Client>{
+  const headers = new HttpHeaders({'content-type':'application/json'});
+  const url = `${this.clientsUrl}/${id}`;
+  return this.http.delete<Client>(url,{headers}).pipe(
+    catchError(this.handleError)
+  )
 }
 
 
@@ -41,6 +70,19 @@ private handleError(err) {
     }
     console.error(err);
     return throwError(errorMessage);
+  }
+
+
+  initializeClient(): Client{
+    return {
+      id: 0,
+      firstName: null,
+      lastName: null,
+      address: null,
+      city: null,
+      state: null,
+      productOrders: null
+    }
   }
 
 }
