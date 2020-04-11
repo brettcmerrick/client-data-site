@@ -34,13 +34,35 @@
         <input type="text" class="form-control" id="clientCity"  formControlName="city">
       </div>
     </div>
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="clientOrders">Product Orders:</label>
-      <div class="col-sm-10">          
-        <input type="text" class="form-control" id="clientOrders"  formControlName="productOrders">
+    <h2>Product Orders</h2>
+    <div formArrayName="productForm">
+      <div [formGroupName]="i"
+      *ngFor="let prod of productForm.controls; let i=index">
+        <div class="form-group">
+          <label class="control-label col-sm-2" attr.for="{{'nameId' + i}}">Product:</label>
+          <div class="col-sm-10">          
+            <input type="text" class="form-control" id="{{'nameId' + i}}"  formControlName="name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-2" attr.for="{{'priceId' + i}}">Price:</label>
+          <div class="col-sm-10">          
+            <input type="text" class="form-control" id="{{'priceId' + i}}"  formControlName="price">
+          </div>
       </div>
     </div>
+</div>
   </form>
+  <!-- <form class="form-horizontal" 
+  [formGroup]="productForm">
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="prodNameId">Product Name:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="prodNameId"  formControlName="productName">
+    </div>
+  </div>
+  </form> -->
+
 </div>
 <div class="col-md-2">
   <button class="btn btn-outline-primary btn-sm"
@@ -61,6 +83,8 @@
   </button>
 </div>
 
+<!-- <br>Product: {{productIds.get('0.name')?.value}}
+<br>Price: {{productIds.get('0.price')?.value}} -->
 
 </body>
 </html>

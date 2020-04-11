@@ -4,7 +4,7 @@ import { Client } from './client';
 import { Observable, throwError, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
-import { ClientData } from './client-data';
+
 
 @Injectable({
     providedIn: 'root'
@@ -81,7 +81,7 @@ private handleError(err) {
       address: null,
       city: null,
       state: null,
-      productOrders: null
+      productIds: null
     }
   }
 

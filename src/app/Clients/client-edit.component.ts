@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { FormBuilder, FormGroup, Validators,FormArray } from '@angular/forms'
 import { ClientService } from './client.service';
 import { Client } from './client';
 import { Observable, Subscription} from 'rxjs';
+import { ProductService } from '../Products/product.service';
+import { Product } from '../Products/product';
 
 @Component({
   templateUrl: './client-edit.component.html'
@@ -11,10 +13,18 @@ import { Observable, Subscription} from 'rxjs';
 export class ClientEditComponent implements OnInit {
 clientForm: FormGroup;
 clientData;
+productData = [];
 pageTitle: string;
+errorMessage: string;
+
+get productForm(): FormArray{
+  return this.clientForm.get('productForm') as FormArray;
+}
+
 
   constructor(
       private clientService: ClientService,
+      private productService: ProductService,
       private route: ActivatedRoute,
       private router: Router,
       private fb: FormBuilder){
@@ -27,8 +37,10 @@ pageTitle: string;
           address: '',
           city: '',
           state: '',
-          productOrders: ['']
+          productIds: 0,
+          productForm: this.fb.array([this.buildProducts()])
       });
+      
 
     const param = this.route.snapshot.paramMap.get('id');
     if(param){
@@ -37,9 +49,23 @@ pageTitle: string;
   }
 }
 
+buildProducts(): FormGroup{
+  return this.fb.group({
+    name: '',
+    price: 0
+  });
+
+}
+
+// addProduct(): void{
+//   this.productForm.push(this.buildProducts());
+// }
+
   getClient(id: number): void{
     this.clientService.getClient(id).subscribe({
-        next: (data: Client) => this.displayClient(data)
+        next: (data: Client) =>{
+          this.displayClient(data);
+        }
     });
   }
  
@@ -47,6 +73,7 @@ pageTitle: string;
     if(this.clientForm){
         this.clientForm.reset();
     }
+    
     this.clientData = client;
     if(client.id === 0){
       this.pageTitle = 'New Client';
@@ -59,10 +86,59 @@ pageTitle: string;
         lastName: this.clientData.lastName,
         address: this.clientData.address,
         city: this.clientData.city,
-        state: this.clientData.state,
-        productOrders: this.clientData.productOrders
-    })
+        state: this.clientData.state
+    });
+
+    this.getProductData(this.clientData.productIds);
+    //this.getProducts(); testing
   }
+
+  //testing
+  // getProducts(){
+  //   this.productService.getProducts().subscribe({
+  //     next:(data: Product) => {
+  //       this.displayProduct(data);
+  //     }
+  //   });
+  // }
+
+  getProductData(id: []){
+    
+    if(this.productData.length < 1)
+    this.productForm.removeAt(0);
+
+    id.forEach(element => {
+      this.productForm.push(this.buildProducts());
+      this.productService.getProduct(element).subscribe({
+        next: (data: Product) => {
+          this.displayProduct(data);
+        }
+      });
+    });
+
+  }
+
+
+
+  displayProduct(product: Product): void{
+    if(this.productForm){
+      // this.productForm.reset();
+
+      this.productData.push(product);
+let lastItemInArray = this.productData.length - 1;
+
+//use a loop here?
+
+  this.productForm.at(lastItemInArray).patchValue({
+    name: this.productData[lastItemInArray].name,
+    price: this.productData[lastItemInArray].price
+  });
+
+
+    //this.clientForm.setControl('productIds', this.fb.array(this.clientData.productIds || []))
+    //: this.addProduct()
+  }
+}
 
   saveClient(): void{
   const c = {...this.clientData, ...this.clientForm.value};

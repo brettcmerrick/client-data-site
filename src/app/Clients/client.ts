@@ -5,5 +5,5 @@ export interface Client{
     address: string;
     city: string;
     state: string;
-    productOrders: string[];
+    productIds: number[];
 }
