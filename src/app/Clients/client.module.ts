@@ -8,6 +8,7 @@ import { ClientData } from './client-data';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ClientEditComponent } from './client-edit.component';
+import { ProductModule } from '../Products/product.module';
 
 @NgModule({
     declarations:[
@@ -26,7 +27,8 @@ import { ClientEditComponent } from './client-edit.component';
           ReactiveFormsModule,
           InMemoryWebApiModule.forRoot(ClientData),
           HttpClientModule,
-          CommonModule
+          CommonModule,
+          ProductModule
           
     ]
 })
