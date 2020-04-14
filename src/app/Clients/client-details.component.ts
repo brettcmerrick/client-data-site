@@ -12,8 +12,8 @@ import { ProductService } from '../Products/product.service';
 export class ClientDetailsComponent{
     title: string = 'Client Details';
     url: string = '';
-    client: Client;
-    products: Product;
+    client;
+    products = [];
     errorMessage = '';
 
 constructor(
@@ -34,22 +34,28 @@ ngOnInit(): void {
 getClient(id: number): void{
     this.clientService.getClient(id)
     .subscribe({
-        next: data => this.client = data,
-        complete: () => console.log(this.client.productIds),
+        next: (data: Client) => 
+        this.displayClient(data),
         error: err => this.errorMessage = err
     }); 
 }
 
-getProduct(id: number|number[]): void{
-    this.productService.getProduct(id)
-    .subscribe({
-        next: data =>{
-            this.products = data;
-            console.log(this.products);
+displayClient(client: Client): void{
+    this.client = client;
+    this.getProduct(this.client.productIds);
+}
+
+getProduct(id: []){
+    id.forEach(element => {
+    this.productService.getProduct(element).subscribe({
+        next: (data: Product) =>{
+            this.products.push(data);
         }, 
         error: err => this.errorMessage = err
-    })
+    });
+});
 }
+
 
 
     onBack(): void{

@@ -28,6 +28,14 @@ getProduct(id): Observable<Product>{
     );
 }
 
+getProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.productsUrl)
+    .pipe(
+        tap(data => console.log(JSON.stringify(data))),
+        catchError(this.handleError)
+    );
+}
+
 // getProduct2(id): Observable<Product>{
 //     const url = `${this.productsUrl}/${id}`
 //     this.http.get<Product>(url).subscribe(x=>this.product.next(x));
