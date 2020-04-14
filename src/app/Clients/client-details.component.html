@@ -28,10 +28,11 @@
           <div class="col-md-3">State:</div>
           <div class="col-md-6">{{client.state}}</div>
         </div>
-        <div class="row">
-          <div class="col-md-3">Client Orders:</div>
-          <div class="col-md-6"></div>
-        </div>
+        <div class="row"><h3>Client Orders:</h3></div>
+          <div class="col-md-8" *ngFor ="let order of products">
+            <div class="col-md-6">{{order.name}}</div>
+            <div class="col-md-6">{{order.price}}</div>
+          </div>
       </div>
     </div>
 

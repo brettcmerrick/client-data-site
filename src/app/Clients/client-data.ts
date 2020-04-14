@@ -38,32 +38,32 @@ createDb() {
     const products: Product[] = [
         {
             id: 1,
-            name: "Cruiser Kayak",
+            name: 'Cruiser Kayak',
             price: 800
         },
         {
             id: 2,
-            name: "PremierOne Long Board",
+            name: 'PremierOne Long Board',
             price: 150
         },
         {
             id: 3,
-            name: "Pop Scooter",
+            name: 'Pop Scooter',
             price: 45
         },
         {
             id: 4,
-            name: "SunnySide Rollerskates",
+            name: 'SunnySide Rollerskates',
             price: 60
         },
         {
             id: 5,
-            name: "Jr Harley Cruiser",
+            name: 'Jr Harley Cruiser',
             price: 299
         },
         {
             id: 6,
-            name: "Big Bounce Jumparoo",
+            name: 'Big Bounce Jumparoo',
             price: 399
         }
         ];

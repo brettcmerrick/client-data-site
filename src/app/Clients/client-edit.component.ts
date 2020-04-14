@@ -37,7 +37,6 @@ get productForm(): FormArray{
           address: '',
           city: '',
           state: '',
-          productIds: 0,
           productForm: this.fb.array([this.buildProducts()])
       });
       
@@ -138,6 +137,23 @@ let lastItemInArray = this.productData.length - 1;
     //this.clientForm.setControl('productIds', this.fb.array(this.clientData.productIds || []))
     //: this.addProduct()
   }
+}
+
+runUpdates(): void{
+  this.saveProduct(this.clientData.productIds);
+  this.saveClient();
+}
+
+saveProduct(id: []): void{
+  for(let i = 0; i < id.length; i++){
+    const p = {...this.productData[i], ...this.productForm.value[i]};
+    this.productService.updateProduct(p).subscribe({
+      next: data => {
+        this.productData[i] = data
+      }
+    });
+  }
+  
 }
 
   saveClient(): void{
