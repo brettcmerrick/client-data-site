@@ -31,7 +31,7 @@ createDb() {
         lastName: 'Wynn',
         address: '789 Charlie Ln',
         city: 'Coalville',
-        state: 'Conneticut',
+        state: 'Ct',
         productIds:  [3,5] 
     }
     ];
