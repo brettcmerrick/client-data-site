@@ -13,8 +13,8 @@
               <th>Address</th>
               <th>City</th>
               <th>State</th>
-              <th>Order Number</th>
-              <th>High Priority</th>
+              <th>Product Orders</th>
+              <th>High Priority (Order Exceeds $500)</th>
             </tr>
           </thead>
           <tbody>
@@ -29,10 +29,10 @@
                 {{client.state}}
               </td>
               <td>
-                {{client.productIds}}
+                {{listOrders(client)}}
               </td>
-              <td *ngFor="let product of productList">
-                <!-- {{product.name}} -->
+              <td>
+                {{highPriority}}
               </td>
             </tr>
           </tbody>

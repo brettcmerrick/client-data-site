@@ -23,7 +23,7 @@ createDb() {
         address: '456 Beta St',
         city: 'Boulder',
         state: 'Wy',
-        productIds:  [2,4]  
+        productIds:  [2,4,6]  
     },
     {
         id: 3,
@@ -31,7 +31,7 @@ createDb() {
         lastName: 'Wynn',
         address: '789 Charlie Ln',
         city: 'Coalville',
-        state: 'Conneticut',
+        state: 'Ct',
         productIds:  [3,5] 
     }
     ];
