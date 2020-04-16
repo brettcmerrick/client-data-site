@@ -23,7 +23,7 @@ createDb() {
         address: '456 Beta St',
         city: 'Boulder',
         state: 'Wy',
-        productIds:  [2,4]  
+        productIds:  [2,4,6]  
     },
     {
         id: 3,
