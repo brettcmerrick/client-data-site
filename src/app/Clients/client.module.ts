@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ClientEditComponent } from './client-edit.component';
 import { ProductModule } from '../Products/product.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     declarations:[
@@ -28,7 +29,8 @@ import { ProductModule } from '../Products/product.module';
           InMemoryWebApiModule.forRoot(ClientData),
           HttpClientModule,
           CommonModule,
-          ProductModule
+          ProductModule,
+          FormsModule
           
     ]
 })

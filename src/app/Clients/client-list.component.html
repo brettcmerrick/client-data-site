@@ -3,7 +3,13 @@
      <h2> {{pageTitle}} </h2>
     </div>
     <div class="card-body">
-  
+      <div class="row">
+        <div class="col-md-2">
+          <input type="text"
+          [(ngModel)]="listFilter" />
+
+        </div>
+      </div>
       <div class="table-responsive">
         <table class="table mb-0">
           <thead>
@@ -18,7 +24,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let client of clientList">
+            <tr *ngFor="let client of filteredClients">
               <td>
                 <a [routerLink]="['/clientDetails', client.id]">{{client.firstName}}</a>
               </td>

@@ -18,6 +18,17 @@ errorMessage = '';
 orderNames: string[] = [];
 orderPrices: number[] = [];
 highPriority: boolean = false;
+filteredClients: Client[] = [];
+
+_listFilter = '';
+get listFilter(){
+    return this._listFilter;
+}
+
+set listFilter(filter: string){
+    this._listFilter = filter;
+    this.filteredClients = this.listFilter? this.filterTheClients(this.listFilter): this.clientList;
+}
 
 constructor(private clientService: ClientService,
             private productService: ProductService,
@@ -28,6 +39,7 @@ ngOnInit(): void{
     this.clientService.getClients().subscribe({
     next: clients => {
         this.clientList = clients;
+        this.filteredClients = clients;
     },
     error: err => this.errorMessage = err
     });
@@ -38,6 +50,20 @@ ngOnInit(): void{
     },
     error: err => this.errorMessage = err
 });
+}
+
+//temporary filter until a filter service is implemented to filter by all column data
+filterTheClients(filterBy: string): Client[]{
+    filterBy = filterBy.toLocaleLowerCase();
+    return this.clientList.filter((client: Client) =>
+       {let firstName = client.firstName.toLocaleLowerCase().indexOf(filterBy) != -1;
+        let lastName = client.lastName.toLocaleLowerCase().indexOf(filterBy) != -1;
+        if(firstName === true || lastName === true){
+            return true;
+        }else{
+            return false;
+        }
+    });
 }
 
 
