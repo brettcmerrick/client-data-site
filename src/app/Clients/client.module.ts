@@ -10,13 +10,15 @@ import { CommonModule } from '@angular/common';
 import { ClientEditComponent } from './client-edit.component';
 import { ProductModule } from '../Products/product.module';
 import { FormsModule } from '@angular/forms';
+import { PriorityClient } from './client-priority.component';
 
 @NgModule({
     declarations:[
         //only components,directives,pipes
         ClientListComponent,
         ClientDetailsComponent,
-        ClientEditComponent
+        ClientEditComponent,
+        PriorityClient
         
     ],
     imports:[

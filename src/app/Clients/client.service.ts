@@ -81,7 +81,8 @@ private handleError(err) {
       address: null,
       city: null,
       state: null,
-      productIds: null
+      productIds: null,
+      highPriority: null
     }
   }
 

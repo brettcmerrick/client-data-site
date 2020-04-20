@@ -37,9 +37,9 @@
               <td>
                 {{listOrders(client)}}
               </td>
-              <td>
-                {{highPriority}}
-              </td>
+              <priority-client  
+              [client]="client">
+              </priority-client>
             </tr>
           </tbody>
         </table>

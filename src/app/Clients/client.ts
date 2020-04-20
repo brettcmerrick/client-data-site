@@ -6,4 +6,5 @@ export interface Client{
     city: string;
     state: string;
     productIds: number[];
+    highPriority: boolean;
 }

@@ -16,8 +16,6 @@ clientList: Client[] = [];
 productList: Product[] =[];
 errorMessage = '';
 orderNames: string[] = [];
-orderPrices: number[] = [];
-highPriority: boolean = false;
 filteredClients: Client[] = [];
 
 _listFilter = '';
@@ -71,15 +69,12 @@ listOrders(client){
     for(let i = 0; i < client.productIds.length; i++){
         const orderNumbers = client.productIds;
         this.orderNames = [];
-        this.orderPrices = [];
         orderNumbers.forEach(element =>{
             let neededProduct = this.productList.find(ele => ele.id === element);
             this.orderNames.push(neededProduct.name);
-            this.orderPrices.push(neededProduct.price);
             
         });
     }
-this.highPriority = this.processPriorities(...this.orderPrices);
 return this.orderNames;
 }
 
@@ -87,7 +82,9 @@ processPriorities(...number){
     let addedValues = 0;
     number.map(x=>{ addedValues += x})
 return addedValues > 500;
+
 }
+
 
 onCreate(){
     this.router.navigate(['/clientEdit/0/edit']);

@@ -14,7 +14,8 @@ createDb() {
         address: '123 Alpha Dr',
         city: 'Aspen',
         state: 'Al',
-        productIds: [1,3]
+        productIds: [1,3],
+        highPriority: false
     },
     {
         id: 2,
@@ -23,7 +24,8 @@ createDb() {
         address: '456 Beta St',
         city: 'Boulder',
         state: 'Wy',
-        productIds:  [2,4,6]  
+        productIds:  [2,4,6],
+        highPriority: false
     },
     {
         id: 3,
@@ -32,7 +34,8 @@ createDb() {
         address: '789 Charlie Ln',
         city: 'Coalville',
         state: 'Ct',
-        productIds:  [3,5] 
+        productIds:  [3,5],
+        highPriority: false
     }
     ];
     const products: Product[] = [
