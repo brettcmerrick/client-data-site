@@ -14,13 +14,7 @@ export class ProductService{
 
 constructor(private http: HttpClient) {}
 
-//original
-// getProduct(id): Observable<Product>{
-//     const url = `${this.productsUrl}/${id}`
-//     return this.http.get<Product>(url);
-// }
 
-//testing
 getProduct(id): Observable<Product>{
     const url = `${this.productsUrl}/${id}`
     return this.http.get<Product>(url).pipe(
@@ -48,6 +42,17 @@ updateProduct(c: Product): Observable<Product>{
     return this.http.put<Product>(url,c,{headers: headers});
 }
 
+createProduct(): Observable<Product>{
+    const product = this.initializeProduct();
+    const headers = new HttpHeaders({'content-type':'application/json'});
+    const url = this.productsUrl;
+    product.id = null;
+    return this.http.post<Product>(url,product,{headers}).
+    pipe(
+      tap(data => console.log(JSON.stringify(data))),
+      catchError(this.handleError)
+    )
+  }
 
 deleteProduct(id: number): Observable<Product>{
     const headers = new HttpHeaders({'content-type':'application/json'});
@@ -59,19 +64,25 @@ deleteProduct(id: number): Observable<Product>{
 
 
 private handleError(err) {
-    // in a real world app, we may send the server to some remote logging infrastructure
-    // instead of just logging it to the console
+   
     let errorMessage: string;
     if (err.error instanceof ErrorEvent) {
-        // A client-side or network error occurred. Handle it accordingly.
+        
         errorMessage = `An error occurred: ${err.error.message}`;
     } else {
-        // The backend returned an unsuccessful response code.
-        // The response body may contain clues as to what went wrong,
+        
         errorMessage = `Backend returned code ${err.status}: ${err.body.error}`;
     }
     console.error(err);
     return throwError(errorMessage);
+}
+
+initializeProduct(): Product{
+    return{
+        id: 0,
+        name: null,
+        price: null
+    }
 }
 
 }

@@ -35,6 +35,15 @@
       </div>
     </div>
     <h2>Product Orders</h2>
+    <div class="row">
+      <div class="col-md-2">
+        <button class="btn btn-outline-primary btn-sm"
+        (click)="addProduct()">
+          Add to Order
+        </button>
+      </div>
+    </div>
+
     <div formArrayName="productForm">
       <div [formGroupName]="i"
       *ngFor="let prod of productForm.controls; let i=index">
@@ -79,7 +88,7 @@
 <div class="col-md-2">
   <button class="btn btn-outline-primary btn-sm"
   (click)="deleteClient()">
-    Delete
+    Delete Client
   </button>
 </div>
 
