@@ -56,9 +56,6 @@ buildProducts(): FormGroup{
 
 }
 
-// addProduct(): void{
-//   this.productForm.push(this.buildProducts());
-// }
 
   getClient(id: number): void{
     this.clientService.getClient(id).subscribe({
@@ -89,17 +86,8 @@ buildProducts(): FormGroup{
     });
 
     this.getProductData(this.clientData.productIds);
-    //this.getProducts(); testing
   }
 
-  //testing
-  // getProducts(){
-  //   this.productService.getProducts().subscribe({
-  //     next:(data: Product) => {
-  //       this.displayProduct(data);
-  //     }
-  //   });
-  // }
 
   getProductData(id: []){
     
@@ -114,9 +102,7 @@ buildProducts(): FormGroup{
         }
       });
     });
-
   }
-
 
 
   displayProduct(product: Product): void{
@@ -133,28 +119,28 @@ let lastItemInArray = this.productData.length - 1;
     price: this.productData[lastItemInArray].price
   });
 
-
-    //this.clientForm.setControl('productIds', this.fb.array(this.clientData.productIds || []))
-    //: this.addProduct()
   }
 }
 
 runUpdates(): void{
-  this.saveProduct(this.clientData.productIds);
-  this.saveClient();
+      this.saveProduct(this.clientData.productIds);
+      this.saveClient();
+ 
 }
 
 saveProduct(id: []): void{
-  for(let i = 0; i < id.length; i++){
+  for(let i = 0; i < id.length + 1; i++){
+    //if dirty, then break  ----needed conditional
     const p = {...this.productData[i], ...this.productForm.value[i]};
     this.productService.updateProduct(p).subscribe({
       next: data => {
-        this.productData[i] = data
+      this.productData[i] = data
       }
     });
-  }
   
+  }
 }
+
 
   saveClient(): void{
   const c = {...this.clientData, ...this.clientForm.value};
@@ -170,6 +156,20 @@ saveProduct(id: []): void{
       }
     });
   }
+  }
+
+  addProduct(): void{
+    this.productForm.push(this.buildProducts());
+    this.productService.createProduct().subscribe({
+      next:(data)=> {
+        console.log(data);
+        this.productData.push(data);
+        this.productService.getProducts().subscribe({
+          next:(data)=> 
+            this.clientData.productIds.push(data.length)
+        })     
+      } 
+    })
   }
 
   deleteClient():void{
