@@ -10,8 +10,10 @@ import { catchError, tap, map} from 'rxjs/operators';
 })
 export class ProductService{
   private productsUrl = 'api/products';
-  private product: BehaviorSubject<Product> = new BehaviorSubject<Product>(null);
-
+  //private product: BehaviorSubject<Product> = new BehaviorSubject<Product>(null);
+  //TEST
+  public product: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
+  
 constructor(private http: HttpClient) {}
 
 
@@ -30,11 +32,19 @@ getProducts(): Observable<Product[]> {
     );
 }
 
+//TEST
+load(): void{
+    this.http.get<Product[]>(this.productsUrl).subscribe(x=>this.product.next(x));
+   
+}
+
 // getProduct2(id): Observable<Product>{
 //     const url = `${this.productsUrl}/${id}`
 //     this.http.get<Product>(url).subscribe(x=>this.product.next(x));
 //     return this.product.asObservable();
 // }
+
+
 
 updateProduct(c: Product): Observable<Product>{
     const headers = new HttpHeaders({'content-type':'application/json'});
@@ -57,10 +67,13 @@ createProduct(): Observable<Product>{
 deleteProduct(id: number): Observable<Product>{
     const headers = new HttpHeaders({'content-type':'application/json'});
     const url = `${this.productsUrl}/${id}`;
-    return this.http.delete<Product>(url,{headers}).pipe(
+    return this.http.delete<Product>(url,{headers})
+    .pipe(map(response => response),
         catchError(this.handleError)
-    )
+    );
+    
 }
+
 
 
 private handleError(err) {

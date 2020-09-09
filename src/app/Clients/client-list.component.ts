@@ -42,6 +42,12 @@ ngOnInit(): void{
     error: err => this.errorMessage = err
     });
 
+
+    //TEST
+    // this.productService.product.subscribe((data) => {
+    //     this.productList = data;
+    // });
+
     this.productService.getProducts().subscribe({
         next: products =>{
         this.productList = products;
@@ -71,7 +77,12 @@ listOrders(client){
         this.orderNames = [];
         orderNumbers.forEach(element =>{
             let neededProduct = this.productList.find(ele => ele.id === element);
-            this.orderNames.push(neededProduct.name);
+            if(neededProduct.name === 'Deleted'){
+                //do nothing
+            }else{
+                this.orderNames.push(neededProduct.name);
+            }
+           
             
         });
     }

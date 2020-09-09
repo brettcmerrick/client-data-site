@@ -49,6 +49,7 @@ getProduct(id: []){
     id.forEach(element => {
     this.productService.getProduct(element).subscribe({
         next: (data: Product) =>{
+            if(data.name !== 'Deleted')
             this.products.push(data);
         }, 
         error: err => this.errorMessage = err

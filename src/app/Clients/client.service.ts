@@ -3,7 +3,7 @@ import { Client } from './client';
 
 import { Observable, throwError, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -23,9 +23,6 @@ getClients(): Observable<Client[]> {
 }
 
 getClient(id): Observable<Client>{
-if(id === 0){
-  return of(this.initializeClient());
-}
 const url = `${this.clientsUrl}/${id}`
 return this.http.get<Client>(url);
 }
@@ -36,11 +33,12 @@ updateClient(c: Client): Observable<Client>{
   return this.http.put<Client>(url,c,{headers: headers});
 }
 
-createClient(c: Client): Observable<Client>{
+createClient(): Observable<Client>{
+  const client = this.initializeClient();
   const headers = new HttpHeaders({'content-type':'application/json'});
   const url = this.clientsUrl;
-  c.id = null;
-  return this.http.post<Client>(url,c,{headers}).
+  client.id = null;
+  return this.http.post<Client>(url,client,{headers}).
   pipe(
     tap(data => console.log(JSON.stringify(data))),
     catchError(this.handleError)
@@ -50,9 +48,10 @@ createClient(c: Client): Observable<Client>{
 deleteClient(id: number): Observable<Client>{
   const headers = new HttpHeaders({'content-type':'application/json'});
   const url = `${this.clientsUrl}/${id}`;
-  return this.http.delete<Client>(url,{headers}).pipe(
-    catchError(this.handleError)
-  )
+  return this.http.delete<Client>(url,{headers})
+  .pipe(map(response => response),
+      catchError(this.handleError)
+  );
 }
 
 
@@ -79,7 +78,7 @@ private handleError(err) {
       address: null,
       city: null,
       state: null,
-      productIds: null,
+      productIds: [],
       highPriority: null
     }
   }
