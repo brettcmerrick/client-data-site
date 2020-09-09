@@ -72,21 +72,18 @@ filterTheClients(filterBy: string): Client[]{
 
 
 listOrders(client){
+    if(client.productIds.length > 0){
+
     for(let i = 0; i < client.productIds.length; i++){
         const orderNumbers = client.productIds;
         this.orderNames = [];
         orderNumbers.forEach(element =>{
             let neededProduct = this.productList.find(ele => ele.id === element);
-            if(neededProduct.name === 'Deleted'){
-                //do nothing
-            }else{
-                this.orderNames.push(neededProduct.name);
-            }
-           
-            
+                this.orderNames.push(neededProduct.name); 
         });
     }
 return this.orderNames;
+    }
 }
 
 processPriorities(...number){
