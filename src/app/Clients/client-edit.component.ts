@@ -37,7 +37,7 @@ get productForm(): FormArray{
           address: '',
           city: '',
           state: '',
-          productForm: this.fb.array([this.buildProducts()])
+          productForm: this.fb.array([])
       });
       
 
@@ -53,16 +53,25 @@ buildProducts(): FormGroup{
     name: '',
     price: 0
   });
-
 }
 
 
   getClient(id: number): void{
-    this.clientService.getClient(id).subscribe({
+    if(id === 0){
+        this.pageTitle = 'New Client';
+        this.clientService.createClient().subscribe({
+        next: (data)=> {
+          this.clientData = data;
+        }
+      });
+    }else{
+      this.pageTitle = 'Edit Client';
+      this.clientService.getClient(id).subscribe({
         next: (data: Client) =>{
           this.displayClient(data);
         }
     });
+  }
   }
  
   displayClient(client: Client): void{
@@ -71,11 +80,6 @@ buildProducts(): FormGroup{
     }
     
     this.clientData = client;
-    if(client.id === 0){
-      this.pageTitle = 'New Client';
-    }else{
-      this.pageTitle = 'Edit Client';
-    }
     
     this.clientForm.patchValue({
         firstName: this.clientData.firstName,
@@ -91,8 +95,8 @@ buildProducts(): FormGroup{
 
   getProductData(id: []){
     
-    if(this.productData.length < 1)
-    this.productForm.removeAt(0);
+    // if(this.productData.length < 1)
+    // this.productForm.removeAt(0);
 
     id.forEach(element => {
       this.productForm.push(this.buildProducts());
@@ -130,7 +134,8 @@ runUpdates(): void{
 
 saveProduct(id: []): void{
   for(let i = 0; i < id.length + 1; i++){
-    //if dirty, then break  ----needed conditional
+    //if dirty, then break  ----conditional needed
+    
     const p = {...this.productData[i], ...this.productForm.value[i]};
     this.productService.updateProduct(p).subscribe({
       next: data => {
@@ -144,18 +149,13 @@ saveProduct(id: []): void{
 
   saveClient(): void{
   const c = {...this.clientData, ...this.clientForm.value};
-    if(this.clientData.id === 0){
-      this.clientService.createClient(c).subscribe({
-        next: ()=> {this.onSaveComplete()}
-      });
-    }else{
     this.clientService.updateClient(c).subscribe({
       next: data => {
         this.clientData = data,
         this.onSaveComplete()
       }
     });
-  }
+
   }
 
   addProduct(): void{
@@ -172,7 +172,7 @@ saveProduct(id: []): void{
     })
   }
 
-  deleteClient():void{
+  deleteClient(): void{
     if(this.clientData.id === 0){
       this.onSaveComplete();
     }else{
@@ -184,9 +184,29 @@ saveProduct(id: []): void{
     }
   }
 
+  deleteProduct(i): void{
+
+    this.productService.deleteProduct(this.productData[i].id).subscribe(
+      result => console.log(result)
+    );
+    
+    const productId = this.clientData.productIds.indexOf(this.productData[i].id);
+    this.clientData.productIds.splice(productId,1);
+
+    const c = this.clientData;
+    this.clientService.updateClient(c).subscribe({
+      next: data => {console.log(data)
+  }
+});
+
+this.productForm.removeAt(i);
+
+}
+
 
   onSaveComplete(): void{
     this.clientForm.reset();
+    this.productForm.reset();
     this.router.navigate(['/clientList']);
   }
 
