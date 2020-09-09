@@ -186,12 +186,14 @@ saveProduct(id: []): void{
 
   deleteProduct(i): void{
 
-    this.productService.deleteProduct(this.productData[i].id).subscribe(
-      result => console.log(result)
-    );
+    // this.productService.deleteProduct(this.productData[i].id).subscribe(
+    //   result => console.log(result)
+    // );
     
     const productId = this.clientData.productIds.indexOf(this.productData[i].id);
     this.clientData.productIds.splice(productId,1);
+
+    this.productData.splice(i,1)
 
     const c = this.clientData;
     this.clientService.updateClient(c).subscribe({
