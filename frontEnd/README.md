@@ -1,3 +1,6 @@
-** This file will be updated periodically as the scope of the site changes **
+Angular Application with Node.js Express, Sequelize & PostgreSQL: CRUD Rest APIs
 
-This project is being created to show the various concepts of Angular being applied in a website.
+Project setup
+npm install
+Open a new terminal for "frontEnd" folder and run ng serve --port 8081. Navigate to http://localhost:8081/.
+Open a new terminal for "backEnd" folder and run node server.js
