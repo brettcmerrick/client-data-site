@@ -15,7 +15,8 @@ import { ClientListComponent } from './Clients/client-list.component';
   imports: [
     BrowserModule,
     RouterModule.forRoot([
-      { path: 'clientList', component: ClientListComponent}
+      { path: 'clientList', component: ClientListComponent},
+      { path: '', redirectTo: '/clientList', pathMatch: 'full'}
     ]),
     ClientModule,
     AppRoutingModule,

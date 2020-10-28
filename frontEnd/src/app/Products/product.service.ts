@@ -9,7 +9,7 @@ import { catchError, tap, map} from 'rxjs/operators';
     providedIn: 'root'
 })
 export class ProductService{
-  private productsUrl = 'api/products';
+  private productsUrl = 'http://localhost:8080/api/products';
   //private product: BehaviorSubject<Product> = new BehaviorSubject<Product>(null);
   //TEST
   public product: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
@@ -52,13 +52,13 @@ updateProduct(c: Product): Observable<Product>{
     return this.http.put<Product>(url,c,{headers: headers});
 }
 
-createProduct(): Observable<Product>{
-    const product = this.initializeProduct();
+createProduct(p: Product): Observable<Product>{
+    // const product = this.initializeProduct();
     const headers = new HttpHeaders({'content-type':'application/json'});
     const url = this.productsUrl;
-    product.id = null;
-    return this.http.post<Product>(url,product,{headers}).
-    pipe(
+    // product.id = null;
+    return this.http.post<Product>(url,p,{headers})
+    .pipe(
       tap(data => console.log(JSON.stringify(data))),
       catchError(this.handleError)
     )

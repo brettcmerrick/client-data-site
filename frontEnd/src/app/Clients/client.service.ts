@@ -5,12 +5,13 @@ import { Observable, throwError, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
 
+// const clientsUrl = 'http://localhost:8080/api/clients'; //test
 
 @Injectable({
     providedIn: 'root'
 })
 export class ClientService{
-  private clientsUrl = 'api/clients';
+  private clientsUrl = 'http://localhost:8080/api/clients';
 
 constructor(private http: HttpClient) {}
 
@@ -20,6 +21,14 @@ getClients(): Observable<Client[]> {
         tap(data => console.log(JSON.stringify(data))),
         catchError(this.handleError)
     );
+}
+
+
+addProduct(clientId, productId): Observable<Client>{
+  const headers = new HttpHeaders({'content-type':'application/json'});
+  const url = `${this.clientsUrl}/addProduct`;
+  const body ={client:clientId, product: productId};
+  return this.http.post<Client>(url,body,{headers: headers});
 }
 
 getClient(id): Observable<Client>{
@@ -33,13 +42,13 @@ updateClient(c: Client): Observable<Client>{
   return this.http.put<Client>(url,c,{headers: headers});
 }
 
-createClient(): Observable<Client>{
-  const client = this.initializeClient();
+createClient(c: Client): Observable<Client>{
+  //const client = this.initializeClient();
   const headers = new HttpHeaders({'content-type':'application/json'});
   const url = this.clientsUrl;
-  client.id = null;
-  return this.http.post<Client>(url,client,{headers}).
-  pipe(
+  // client.id = null;
+  return this.http.post<Client>(url,c,{headers})
+  .pipe(
     tap(data => console.log(JSON.stringify(data))),
     catchError(this.handleError)
   )
@@ -70,17 +79,17 @@ private handleError(err) {
   }
 
 
-  initializeClient(): Client{
-    return {
-      id: 0,
-      firstName: null,
-      lastName: null,
-      address: null,
-      city: null,
-      state: null,
-      productIds: [],
-      highPriority: null
-    }
-  }
+  // initializeClient(): Client{
+  //   return {
+  //     id: 0,
+  //     firstName: 'bob',
+  //     lastName: 'bob',
+  //     address: 'bob',
+  //     city: 'bob',
+  //     state: 'bob',
+  //     productIds: [],
+  //     highPriority: false
+  //   }
+  // }
 
 }

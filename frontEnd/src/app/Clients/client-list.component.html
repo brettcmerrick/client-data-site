@@ -24,7 +24,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let client of filteredClients">
+            <tr *ngFor="let client of filteredClients; let i = index">
               <td>
                 <a [routerLink]="['/clientDetails', client.id]">{{client.firstName}}</a>
               </td>
@@ -35,7 +35,9 @@
                 {{client.state}}
               </td>
               <td>
-                {{listOrders(client)}}
+                <div class = "subRow" *ngFor ="let product of client.products">
+                {{product.name}}
+                </div>
               </td>
               <priority-client  
               [client]="client">
