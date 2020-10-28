@@ -5,6 +5,7 @@ import { ProductService } from '../Products/product.service';
 import { Product} from '../Products/product';
 import { Router } from '@angular/router';
 import { ThrowStmt } from '@angular/compiler';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -12,11 +13,14 @@ import { ThrowStmt } from '@angular/compiler';
 })
 export class ClientListComponent implements OnInit{
 pageTitle: string= 'Client List';
-clientList: Client[] = [];
-productList: Product[] =[];
+// clientList: Client[] = [];
+clientList: any; //testing
+// productList: Product[] =[];
+productList:any; //testing
 errorMessage = '';
 orderNames: string[] = [];
-filteredClients: Client[] = [];
+// filteredClients: Client[] = [];   client-list.component.ts:43:9 - error TS2322: Type 'Object' is not assignable to type 'Client[]'. (this.filteredClients = clients;)
+filteredClients: any; //testing
 
 _listFilter = '';
 get listFilter(){
@@ -42,6 +46,31 @@ ngOnInit(): void{
     error: err => this.errorMessage = err
     });
 
+// ngOnInit(): void{
+//     this.clientService.getClients()
+//     .subscribe(
+//     data => {
+//         this.clientList = data;
+//         this.filteredClients = data;
+//     },
+//     error => {console.log(error);
+//     });
+
+// ngOnInit(){
+//     this.retrieveClients();
+// }
+
+// retrieveClients(){
+//     this.clientService.getClients()
+//     .subscribe(
+//     data => {
+//         this.clientList = data;
+//         this.filteredClients = data;
+//         console.log(data);
+//     },
+//     error => {console.log(error);
+//     });
+//Rx.Observable.fromPromise(User.findAll()).subscribe(...)
 
     //TEST
     // this.productService.product.subscribe((data) => {
@@ -55,6 +84,7 @@ ngOnInit(): void{
     error: err => this.errorMessage = err
 });
 }
+
 
 //temporary filter until a filter service is implemented to filter by all column data
 filterTheClients(filterBy: string): Client[]{

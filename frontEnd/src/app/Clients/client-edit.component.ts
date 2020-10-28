@@ -16,6 +16,7 @@ clientData;
 productData = [];
 pageTitle: string;
 errorMessage: string;
+id: number;
 
 get productForm(): FormArray{
   return this.clientForm.get('productForm') as FormArray;
@@ -43,8 +44,8 @@ get productForm(): FormArray{
 
     const param = this.route.snapshot.paramMap.get('id');
     if(param){
-        const id = +param;
-        this.getClient(id);
+        /*const testing*/ this.id = +param;
+        this.getClient(this.id);
   }
 }
 
@@ -59,11 +60,12 @@ buildProducts(): FormGroup{
   getClient(id: number): void{
     if(id === 0){
         this.pageTitle = 'New Client';
-        this.clientService.createClient().subscribe({
-        next: (data)=> {
-          this.clientData = data;
-        }
-      });
+        //testing do nothing
+      //   this.clientService.createClient().subscribe({
+      //   next: (data)=> {
+      //     this.clientData = data;
+      //   }
+      // });
     }else{
       this.pageTitle = 'Edit Client';
       this.clientService.getClient(id).subscribe({
@@ -89,7 +91,7 @@ buildProducts(): FormGroup{
         state: this.clientData.state
     });
 
-    this.getProductData(this.clientData.productIds);
+    // this.getProductData(this.clientData.productIds);
   }
 
 
@@ -127,12 +129,13 @@ let lastItemInArray = this.productData.length - 1;
 }
 
 runUpdates(): void{
-      this.saveProduct(this.clientData.productIds);
+      // this.saveProduct(this.clientData.productIds);
       this.saveClient();
  
 }
 
 saveProduct(id: []): void{
+
   for(let i = 0; i < id.length + 1; i++){
     //if dirty, then break  ----conditional needed
     
@@ -148,6 +151,16 @@ saveProduct(id: []): void{
 
 
   saveClient(): void{
+    if(this.id === 0){
+      const c = {...this.clientData, ...this.clientForm.value};
+      this.clientService.createClient(c).subscribe({
+      next: (data)=> {
+        this.clientData = data,
+        this.onSaveComplete()
+      }
+    });
+  }else{
+
   const c = {...this.clientData, ...this.clientForm.value};
     this.clientService.updateClient(c).subscribe({
       next: data => {
@@ -155,22 +168,22 @@ saveProduct(id: []): void{
         this.onSaveComplete()
       }
     });
-
+  }
   }
 
-  addProduct(): void{
-    this.productForm.push(this.buildProducts());
-    this.productService.createProduct().subscribe({
-      next:(data)=> {
-        console.log(data);
-        this.productData.push(data);
-        this.productService.getProducts().subscribe({
-          next:(data)=> 
-            this.clientData.productIds.push(data.length)
-        })     
-      } 
-    })
-  }
+  // addProduct(): void{
+  //   this.productForm.push(this.buildProducts());
+  //   this.productService.createProduct().subscribe({
+  //     next:(data)=> {
+  //       console.log(data);
+  //       this.productData.push(data);
+  //       this.productService.getProducts().subscribe({
+  //         next:(data)=> 
+  //           this.clientData.productIds.push(data.length)
+  //       })     
+  //     } 
+  //   })
+  // }
 
   deleteClient(): void{
     if(this.clientData.id === 0){
@@ -209,7 +222,11 @@ this.productForm.removeAt(i);
   onSaveComplete(): void{
     this.clientForm.reset();
     this.productForm.reset();
+    if(this.id === 0){
     this.router.navigate(['/clientList']);
+    }else{
+      this.router.navigate([`/clientDetails/${this.id}`]);
+    }
   }
 
 

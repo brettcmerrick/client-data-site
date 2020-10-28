@@ -24,13 +24,9 @@ import { Component } from '@angular/core';
               </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Services</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contact</a>
+          <a class="nav-link"
+          [routerLink]="['/clientEdit/0/edit']">Create New Client
+          </a>
         </li>
       </ul>
     </div>

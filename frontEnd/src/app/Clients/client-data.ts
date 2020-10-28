@@ -1,12 +1,12 @@
 import { Client } from './client';
-import { InMemoryDbService } from 'angular-in-memory-web-api';
+// import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { Product } from '../Products/product';
 
 
-export class ClientData implements InMemoryDbService{
+export class ClientData /*implements InMemoryDbService*/{
 
 createDb() {
-    const clients: Client[] = [
+    const client: Client[] = [
     {
         id: 1,
         firstName: 'Albert',
@@ -70,7 +70,7 @@ createDb() {
             price: 399
         }
         ];
-    return { clients, products };
+    return { client, products };
     }
 
 }

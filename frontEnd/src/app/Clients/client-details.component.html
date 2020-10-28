@@ -28,8 +28,12 @@
           <div class="col-md-3">State:</div>
           <div class="col-md-6">{{client.state}}</div>
         </div>
-        <div class="row"><h3>Client Orders:</h3></div>
-          <div class="col-md-8" *ngFor ="let order of products">
+
+          <div class="card-header">
+            <h2>Client Orders:</h2>
+          </div>
+
+          <div class="col-md-8" *ngFor ="let order of client.products">
             <div class="col-md-6">{{order.name}}</div>
             <div class="col-md-6">{{order.price}}</div>
           </div>
@@ -45,8 +49,17 @@
     <div class="col-md-2">
       <button class="btn btn-outline-primary btn-sm"
       [routerLink]="['/clientEdit', client.id, 'edit']">
-        Edit
+        Edit Client
       </button>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">
+        <button class="btn btn-outline-primary btn-sm"
+        [routerLink]="['/productAdd', client.id]">
+          Add to Order
+        </button>
+      </div>
     </div>
 
   </div>
